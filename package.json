@@ -4,7 +4,7 @@
   "description": "Live update of Catarse contributions",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "gulp test"
   },
   "author": "",
   "license": "MIT",
