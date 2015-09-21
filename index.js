@@ -29,19 +29,19 @@ server.listen(app.get('port'));
 
 var client = new pg.Client(process.env.DATABASE_URL);
 client.connect(function(err) {
-  if(err) {
+ if(err) {
     return console.error('could not connect to postgres', err);
   }
-  client.query('SELECT NOW() AS "theTime"', function(err, result) {
-    if(err) {
-      return console.error('error running query', err);
-    }
-    console.log('From PG: ', result.rows[0].theTime);
-    //output: Tue Jan 15 2013 19:12:47 GMT-600 (CST)
-    client.end();
+  client.on('notification', function(msg) {
+    console.log('Broadcasting notification: ', msg);
+    io.of('/').sockets.forEach(function(socket){
+      socket.emit('new_contributions', msg);
+    });
   });
+  client.query("LISTEN new_contributions");
 });
 
 io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
+  console.log('Open websocket');
+  socket.emit('connected', { hello: 'world' });
 });
