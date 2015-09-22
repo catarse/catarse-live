@@ -25,3 +25,14 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+node_modules
+bower_components
+.lock-wscript
+public/chartjs
+public/mithril.postgrest
+public/mithril
+public/moment
+public/moment-timezone
+public/catarse.js
+public/replace-diacritics/
+public/underscore/

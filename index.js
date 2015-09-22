@@ -4,6 +4,7 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var pg = require('pg');
+var channel_name = 'new_paid_contributions';
 var options = {
   dotfiles: 'ignore',
   etag: false,
@@ -33,12 +34,15 @@ client.connect(function(err) {
     return console.error('could not connect to postgres', err);
   }
   client.on('notification', function(msg) {
+    if(msg.channel !== channel_name) return;
+    console.log('Refreshing view');
+    client.query('REFRESH MATERIALIZED VIEW "1".statistics;')
     console.log('Broadcasting notification: ', msg);
     io.of('/').sockets.forEach(function(socket){
-      socket.emit('new_contributions', msg);
+      socket.emit(channel_name, msg);
     });
   });
-  client.query("LISTEN new_contributions");
+  client.query("LISTEN " + channel_name);
 });
 
 io.on('connection', function (socket) {
