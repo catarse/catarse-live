@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
+    "postinstall": "bower install",
     "start": "node index.js"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "bower": "1.5.2",
     "express": "^4.13.3",
     "jade": "^1.11.0",
     "morgan": "^1.6.1",
