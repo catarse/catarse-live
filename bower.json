@@ -18,7 +18,7 @@
     "tests"
   ],
   "dependencies": {
-    "catarse.js": "0.1.1",
+    "catarse.js": "0.1.4",
     "underscore": "~1.8.3"
   }
 }
