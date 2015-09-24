@@ -1,1 +1,1 @@
-m.postgrest.init('http://localhost:3004', {});
+m.postgrest.init('https://api.catarse.me/', {});
