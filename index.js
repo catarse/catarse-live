@@ -36,7 +36,7 @@ client.connect(function(err) {
   client.on('notification', function(msg) {
     if(msg.channel !== channel_name) return;
     console.log('Refreshing view');
-    client.query('REFRESH MATERIALIZED VIEW "1".statistics;')
+    client.query('REFRESH MATERIALIZED CONCURRENTLY VIEW "1".statistics;')
     console.log('Broadcasting notification: ', msg);
     io.of('/').sockets.forEach(function(socket){
       socket.emit(channel_name, msg);
