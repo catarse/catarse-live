@@ -39,7 +39,15 @@ pgClient.connect(function(err) {
   pgClient.on('notification', function(msg) {
     if (msg.channel !== channel_name) return;
     console.log('Refreshing view');
-    //pgClient.query('REFRESH MATERIALIZED VIEW CONCURRENTLY "1".statistics;')
+    refreshQuery = "do language plpgsql $$ " +
+        "begin " +
+          "if not exists (select true from pg_stat_activity where pg_backend_pid() <> pid and query ~* 'refresh materialized .* \"1\".statistics') then " +
+              "refresh materialized view concurrently \"1\".statistics; " +
+            "end if; " +
+        "end; " +
+      "$$;";
+
+    pgClient.query(refreshQuery);
     console.log('Broadcasting notification: ', msg);
     io.of('/').sockets.forEach(function(socket){
       socket.emit(channel_name, msg);
